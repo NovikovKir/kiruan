@@ -1,0 +1,81 @@
+@model backend.Models.Movie
+
+@{
+    ViewData["Title"] = "Информация о фильме";
+}
+
+<h1>@Model.Title</h1>
+<p>@Model.Description</p>
+
+<div class="mb-3">
+    <strong>Год:</strong> @Model.Year<br />
+    <strong>Длительность:</strong> @Model.DurationMinutes мин.<br />
+    <strong>Возраст:</strong> @Model.AgeRating
+</div>
+
+<h4>Озвучки</h4>
+<ul>
+    @if (Model.AudioTracks.Any())
+    {
+        @foreach (var track in Model.AudioTracks)
+        {
+            <li>@track.Language</li>
+        }
+    }
+    else
+    {
+        <li>Нет доступных озвучек.</li>
+    }
+</ul>
+
+<h4>Субтитры</h4>
+<ul>
+    @if (Model.Subtitles.Any())
+    {
+        @foreach (var subtitle in Model.Subtitles)
+        {
+            <li>@subtitle.Language</li>
+        }
+    }
+    else
+    {
+        <li>Нет доступных субтитров.</li>
+    }
+</ul>
+
+@{
+    var requiresAgeConfirmation = ViewData["RequiresAgeConfirmation"] as bool? ?? false;
+}
+
+@if (requiresAgeConfirmation)
+{
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ageConfirmModal">
+        Смотреть
+    </button>
+
+    <div class="modal fade" id="ageConfirmModal" tabindex="-1" aria-labelledby="ageConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ageConfirmModalLabel">Подтверждение возраста</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    Фильм «@Model.Title» имеет возрастное ограничение <strong>@Model.AgeRating</strong>.
+                    Подтвердите, что вам исполнилось 18 лет.
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Нет</a>
+                    <form asp-action="ConfirmAge" asp-route-id="@Model.Id" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-success">Да, мне 18+</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <a class="btn btn-success" asp-action="Watch" asp-route-id="@Model.Id">Смотреть</a>
+}

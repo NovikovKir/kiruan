@@ -1,0 +1,38 @@
+@model IEnumerable<backend.Models.AudioTrack>
+
+@{
+    ViewData["Title"] = "Озвучки";
+}
+
+<h1>Озвучки</h1>
+
+<a class="btn btn-primary mb-3" asp-action="Create" asp-route-movieId="@ViewData["MovieId"]">Добавить озвучку</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Фильм</th>
+            <th>Язык</th>
+            <th>Путь</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var track in Model)
+        {
+            <tr>
+                <td>@track.Movie?.Title</td>
+                <td>@track.Language</td>
+                <td>@track.FilePath</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@track.Id">Изменить</a>
+                    <form asp-action="Delete" asp-route-id="@track.Id" method="post" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-secondary" asp-controller="AdminMovies" asp-action="Index">Назад к фильмам</a>

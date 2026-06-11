@@ -1,0 +1,50 @@
+@model backend.ViewModels.SubscriptionPurchaseViewModel
+
+@{
+    ViewData["Title"] = "Покупка подписки";
+}
+
+<h1>Покупка подписки</h1>
+
+<form asp-action="Purchase" method="post" class="mt-3">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Plan" class="form-label">План</label>
+        <select asp-for="Plan" class="form-select">
+            <option value="Месяц">Месяц</option>
+            <option value="Год">Год</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CardNumber" class="form-label">Номер карты</label>
+        <input asp-for="CardNumber" class="form-control" required />
+        <span asp-validation-for="CardNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CardHolder" class="form-label">Имя владельца</label>
+        <input asp-for="CardHolder" class="form-control" required />
+        <span asp-validation-for="CardHolder" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="ExpMonth" class="form-label">Месяц</label>
+            <input asp-for="ExpMonth" class="form-control" required />
+            <span asp-validation-for="ExpMonth" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="ExpYear" class="form-label">Год</label>
+            <input asp-for="ExpYear" class="form-control" required />
+            <span asp-validation-for="ExpYear" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Cvv" class="form-label">CVV</label>
+            <input asp-for="Cvv" class="form-control" required />
+            <span asp-validation-for="Cvv" class="text-danger"></span>
+        </div>
+    </div>
+    <button class="btn btn-success" type="submit">Оплатить</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

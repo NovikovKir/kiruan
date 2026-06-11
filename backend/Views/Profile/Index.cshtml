@@ -1,0 +1,44 @@
+@model backend.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<h1>Личный кабинет</h1>
+
+<div class="mb-4">
+    <strong>Статус подписки:</strong> @ViewData["SubscriptionStatus"]<br />
+    <strong>Действует до:</strong> @ViewData["SubscriptionEndAt"]
+</div>
+
+<form asp-action="Update" method="post" class="mb-4">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Электронная почта</label>
+        <input asp-for="Email" class="form-control" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CurrentPassword" class="form-label">Текущий пароль</label>
+        <input asp-for="CurrentPassword" class="form-control" />
+        <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="NewPassword" class="form-label">Новый пароль</label>
+        <input asp-for="NewPassword" class="form-control" />
+        <span asp-validation-for="NewPassword" class="text-danger"></span>
+    </div>
+    <button class="btn btn-primary" type="submit">Сохранить изменения</button>
+</form>
+
+<form asp-controller="Subscription" asp-action="Purchase" method="get" class="mb-3">
+    <button class="btn btn-success" type="submit">Оформить подписку</button>
+</form>
+
+<form asp-action="Delete" method="post">
+    <button class="btn btn-danger" type="submit">Удалить аккаунт</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

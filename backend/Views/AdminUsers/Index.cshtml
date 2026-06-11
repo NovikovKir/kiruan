@@ -1,0 +1,36 @@
+@model IEnumerable<backend.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Пользователи";
+}
+
+<h1>Пользователи</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Роль</th>
+            <th>Подписка</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@user.SubscriptionStatus</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                    <form asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-secondary" asp-controller="AdminMovies" asp-action="Index">Назад к фильмам</a>

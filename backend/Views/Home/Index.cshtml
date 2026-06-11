@@ -1,0 +1,38 @@
+﻿@model IEnumerable<backend.Models.Movie>
+
+@{
+    ViewData["Title"] = "Поиск";
+    var query = ViewData["Query"] as string ?? string.Empty;
+}
+
+<h1 class="mb-4">Поиск фильмов</h1>
+
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-8">
+        <input class="form-control" type="text" name="query" value="@query" placeholder="Введите название фильма" required />
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary w-100" type="submit">Найти</button>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">По вашему запросу ничего не найдено.</div>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var movie in Model)
+        {
+            <a class="list-group-item list-group-item-action" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@movie.Title</h5>
+                    <small>@movie.Year</small>
+                </div>
+                <p class="mb-1">@movie.Description</p>
+                <small>@movie.AgeRating • @movie.DurationMinutes мин.</small>
+            </a>
+        }
+    </div>
+}

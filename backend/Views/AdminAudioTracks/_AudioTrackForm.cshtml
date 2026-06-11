@@ -1,0 +1,27 @@
+@model backend.Models.AudioTrack
+
+@{
+    var movies = ViewData["Movies"] as IEnumerable<backend.Models.Movie> ?? new List<backend.Models.Movie>();
+}
+
+<div class="mb-3">
+    <label asp-for="MovieId" class="form-label">Фильм</label>
+    <select asp-for="MovieId" class="form-select" required>
+        <option value="">Выберите фильм</option>
+        @foreach (var movie in movies)
+        {
+            <option value="@movie.Id">@movie.Title</option>
+        }
+    </select>
+    <span asp-validation-for="MovieId" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Language" class="form-label">Язык озвучки</label>
+    <input asp-for="Language" class="form-control" required />
+    <span asp-validation-for="Language" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="FilePath" class="form-label">Путь к файлу</label>
+    <input asp-for="FilePath" class="form-control" required />
+    <span asp-validation-for="FilePath" class="text-danger"></span>
+</div>

@@ -1,0 +1,38 @@
+@model IEnumerable<backend.Models.Subtitle>
+
+@{
+    ViewData["Title"] = "Субтитры";
+}
+
+<h1>Субтитры</h1>
+
+<a class="btn btn-primary mb-3" asp-action="Create" asp-route-movieId="@ViewData["MovieId"]">Добавить субтитры</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Фильм</th>
+            <th>Язык</th>
+            <th>Путь</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subtitle in Model)
+        {
+            <tr>
+                <td>@subtitle.Movie?.Title</td>
+                <td>@subtitle.Language</td>
+                <td>@subtitle.FilePath</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@subtitle.Id">Изменить</a>
+                    <form asp-action="Delete" asp-route-id="@subtitle.Id" method="post" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-secondary" asp-controller="AdminMovies" asp-action="Index">Назад к фильмам</a>

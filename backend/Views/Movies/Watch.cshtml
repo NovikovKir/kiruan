@@ -1,0 +1,48 @@
+@model backend.Models.Movie
+
+@{
+    ViewData["Title"] = "Просмотр фильма";
+}
+
+<h1>@Model.Title</h1>
+
+<div class="mb-3">
+    <label class="form-label">Озвучка</label>
+    <select class="form-select">
+        @if (Model.AudioTracks.Any())
+        {
+            @foreach (var track in Model.AudioTracks)
+            {
+                <option>@track.Language</option>
+            }
+        }
+        else
+        {
+            <option>Нет доступных озвучек</option>
+        }
+    </select>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Субтитры</label>
+    <select class="form-select">
+        @if (Model.Subtitles.Any())
+        {
+            @foreach (var subtitle in Model.Subtitles)
+            {
+                <option>@subtitle.Language</option>
+            }
+        }
+        else
+        {
+            <option>Нет доступных субтитров</option>
+        }
+    </select>
+</div>
+
+<div class="ratio ratio-16x9">
+    <video controls>
+        <source src="" type="video/mp4" />
+        Ваш браузер не поддерживает HTML5 video.
+    </video>
+</div>

@@ -1,0 +1,18 @@
+@model backend.Models.Movie
+
+@{
+    ViewData["Title"] = "Редактирование фильма";
+}
+
+<h1>Редактировать фильм</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <partial name="_MovieForm" model="Model" />
+    <button class="btn btn-success" type="submit">Сохранить</button>
+    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

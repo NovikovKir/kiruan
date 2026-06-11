@@ -1,0 +1,40 @@
+@model backend.ViewModels.AdminUserEditViewModel
+
+@{
+    ViewData["Title"] = "Редактировать пользователя";
+}
+
+<h1>Редактировать пользователя</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Role" class="form-label">Роль</label>
+        <select asp-for="Role" class="form-select">
+            <option value="User">Пользователь</option>
+            <option value="Admin">Администратор</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SubscriptionStatus" class="form-label">Статус подписки</label>
+        <select asp-for="SubscriptionStatus" class="form-select">
+            <option value="Active">Активна</option>
+            <option value="Inactive">Неактивна</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SubscriptionEndAt" class="form-label">Дата окончания</label>
+        <input asp-for="SubscriptionEndAt" class="form-control" type="date" />
+    </div>
+    <button class="btn btn-success" type="submit">Сохранить</button>
+    <a class="btn btn-secondary" asp-action="Index">Отмена</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
