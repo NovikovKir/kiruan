@@ -4,8 +4,7 @@ namespace backend.ViewModels;
 
 public class ProfileViewModel
 {
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage = "Укажите электронную почту.")]
     public string Email { get; set; } = string.Empty;
 
     [DataType(DataType.Password)]

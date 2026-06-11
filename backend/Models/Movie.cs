@@ -22,6 +22,7 @@ public class Movie
 
     [Required]
     [MaxLength(20)]
+    [RegularExpression("^[+][0-9]{1,2}$", ErrorMessage = "Age rating can only contain a plus sign and a number")]
     public string AgeRating { get; set; } = string.Empty;
 
     [Required]

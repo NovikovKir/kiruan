@@ -14,6 +14,7 @@ public class SubscriptionPurchaseViewModel
 
     [Required]
     [MaxLength(100)]
+    [RegularExpression(@"^[a-zA-Z\s\-]{3,100}$", ErrorMessage = "Card holder name can only contain Latin letters, spaces and hyphens")]
     public string CardHolder { get; set; } = string.Empty;
 
     [Required]

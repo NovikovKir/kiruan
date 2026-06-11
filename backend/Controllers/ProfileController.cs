@@ -41,21 +41,38 @@ public class ProfileController : Controller
     [HttpPost]
     public async Task<IActionResult> Update(ProfileViewModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View("Index", model);
-        }
-
         var user = await _userManager.GetUserAsync(User);
         if (user == null)
         {
             return RedirectToAction("Login", "Account");
         }
 
+        if (!ModelState.IsValid)
+        {
+            PopulateViewData(user);
+            return View("Index", model);
+        }
+
         if (!string.Equals(user.Email, model.Email, StringComparison.OrdinalIgnoreCase))
         {
-            user.Email = model.Email;
-            user.UserName = model.Email;
+            var setUserNameResult = await _userManager.SetUserNameAsync(user, model.Email);
+            if (!setUserNameResult.Succeeded)
+            {
+                AddIdentityErrors(setUserNameResult);
+                PopulateViewData(user);
+                return View("Index", model);
+            }
+
+            var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
+            if (!setEmailResult.Succeeded)
+            {
+                AddIdentityErrors(setEmailResult);
+                PopulateViewData(user);
+                return View("Index", model);
+            }
+
+            user.EmailConfirmed = true;
+            await _userManager.UpdateAsync(user);
         }
 
         if (!string.IsNullOrWhiteSpace(model.NewPassword))
@@ -63,6 +80,7 @@ public class ProfileController : Controller
             if (string.IsNullOrWhiteSpace(model.CurrentPassword))
             {
                 ModelState.AddModelError(string.Empty, "Для смены пароля укажите текущий пароль.");
+                PopulateViewData(user);
                 return View("Index", model);
             }
 
@@ -78,14 +96,28 @@ public class ProfileController : Controller
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
 
+                PopulateViewData(user);
                 return View("Index", model);
             }
         }
 
-        await _userManager.UpdateAsync(user);
         await _signInManager.RefreshSignInAsync(user);
         TempData["Success"] = "Данные обновлены.";
         return RedirectToAction("Index");
+    }
+
+    private void PopulateViewData(ApplicationUser user)
+    {
+        ViewData["SubscriptionStatus"] = user.SubscriptionStatus;
+        ViewData["SubscriptionEndAt"] = user.SubscriptionEndAt?.ToString("dd.MM.yyyy") ?? "Нет";
+    }
+
+    private void AddIdentityErrors(IdentityResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
     }
 
     [HttpPost]
